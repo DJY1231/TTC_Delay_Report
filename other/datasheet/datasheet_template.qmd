@@ -1,20 +1,14 @@
 ---
 title: "Datasheet for 'A dataset'"
-subtitle: "My subtitle if needed"
-author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
-date: "`r Sys.time()`"
-date-format: "D MMMM YYYY"
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+author: "Dong Jun Yoon"
+thanks: "Code and data are available at: https://github.com/DJY1231/TTC-report-2024.git"
+date: today
+date-format: long
+abstract: "This paper provides analyzes of TTC delay data to understand the causes of delays. It illustrates uncover patterns in transit delays, comparing delay causes, trends over time, and variations across different vehicle types. Buses tend to experience delays more frequently than subways or streetcars, occurring approximately 2.35 times more often than subway delays and 4.07 times more than streetcar delays. It suggests that the bus system is less reliable compared to other modes of transportation, likely due to factors such as traffic conditions, mechanical issues, and operational difficulties."
 format: pdf
 number-sections: true
 bibliography: references.bib
 ---
-
-Extract of the questions from @gebru2021datasheets.
-
 
 **Motivation**
 
