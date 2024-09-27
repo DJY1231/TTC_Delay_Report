@@ -13,4 +13,3 @@ library(knitr)
 library(ggplot2)
 
 #### Load data ####
-
