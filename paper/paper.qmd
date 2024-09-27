@@ -5,10 +5,9 @@ author: "Dong Jun Yoon"
 thanks: "Code and data are available at: https://github.com/DJY1231/TTC-report-2024.git"
 date: today
 date-format: long
-abstract: "This paper provides analyzes of TTC delay data to understand the causes of delays. It illustrates uncover patterns in transit delays, comparing delay causes, trends over time, and variations across different vehicle types. Buses tend to experience delays more frequently than subways or streetcars, occurring approximately 2.35 times more often than subway delays and 4.07 times more than streetcar delays. It suggests that the bus system is less reliable compared to other modes of transportation, likely due to factors such as traffic conditions, mechanical issues, and operational difficulties."
+abstract: "This paper provides an analyzes of TTC delay data to understand the causes of delays. It illustrates uncover patterns in transit delays, comparing delay causes, trends over time, and variations across different vehicle types. Buses tend to experience delays more frequently than subways or streetcars, occurring approximately 2.35 times more often than subway delays and 4.07 times more than streetcar delays. It suggests that the bus system is less reliable compared to other modes of transportation, likely due to factors such as traffic conditions, mechanical issues, and operational difficulties."
 format: pdf
 number-sections: true
-bibliography: references.bib
 ---
 
 # Introduction
@@ -185,7 +184,7 @@ subway_delays_by_day$vehicle <- "Subway"
 combined_data <- rbind(bus_delays_by_day, streetcar_delays_by_day, subway_delays_by_day)
 
 ggplot(combined_data, aes(x = Day, y = Count, color = vehicle, group = vehicle)) +
-  geom_line(size = 1) +
+  geom_line(linewidth = 1) +
   geom_point() +
   labs(title = "Number of delays caused in day, by Vehicle",
        x = "Day of the Week",
@@ -262,3 +261,4 @@ Wickham, Hadley. 2016. Ggplot2: Elegant Graphics for Data Analysis. Springer-Ver
 York. https://ggplot2.tidyverse.org.
 
 Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. Dplyr: A Grammar of Data Manipulation. https://dplyr.tidyverse.org.
+
