@@ -1,9 +1,8 @@
-# Starter folder
+# What's stopping toronto?
 
 ## Overview
 
-This repo provides students with a foundation for their own projects associated with *Telling Stories with Data*. You do not need every aspect for every paper and you should delete aspects that you do not need.
-
+This paper provides analyzes of TTC delay data to understand the causes of delays. It illustrates uncover patterns in transit delays, comparing delay causes, trends over time, and variations across different vehicle types. Buses tend to experience delays more frequently than subways or streetcars, occurring approximately 2.35 times more often than subway delays and 4.07 times more than streetcar delays. It suggests that the bus system is less reliable compared to other modes of transportation, likely due to factors such as traffic conditions, mechanical issues, and operational difficulties.
 
 ## File Structure
 
@@ -19,12 +18,4 @@ The repo is structured as:
 
 ## Statement on LLM usage
 
-Aspects of the code were written with the help of the auto-complete tool, Codriver. The abstract and introduction were written with the help of ChatHorse and the entire chat history is available in inputs/llms/usage.txt.
-
-## Some checks
-
-- [ ] Change the rproj file name so that it's not starter_folder.Rproj
-- [ ] Change the README title so that it's not Starter folder
-- [ ] Remove files that you're not using
-- [ ] Update comments in R scripts
-- [ ] Remove this checklist
+Aspects of the code were written with the help of the autocomplete tool, Chat-GPT4o. The entire chat history is available at other/llms/usage.txt.
