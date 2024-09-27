@@ -1,0 +1,120 @@
+Code,Count,Code Description,Delay Group
+SUDP,2391,Disorderly Patron,Patron
+MUIS,1845,Injured or ill Customer (In Station) - Transported,Injury
+SUO,1843,Passenger Other,Patron
+MUPAA,1182,Passenger Assistance Alarm Activated - No Trouble Found,Alarm
+PUOPO,1091,OPTO (COMMS) Train Door Monitoring,Mechanical Fault
+MUIRS,1017,Injured or ill Customer (In Station) - Medical Aid Refused,Injury
+MUO,791,Miscellaneous Other,Miscellaneous
+PUMEL,546,Escalator/Elevator Incident,Subway Station
+MUIR,517,Injured or ill Customer (On Train) - Medical Aid Refused,Injury
+SUUT,509,Unauthorized at Track Level,Incident
+SUAP,363,Assault / Patron Involved,Assault
+MUSC,333,Miscellaneous Speed Control,Mechanical Fault
+MUSAN,323,Unsanitary Vehicle,Cleanliness
+TUSC,308,Operator Overspeeding,Crew
+MUI,288,Injured or ill Customer (On Train) - Transported,Injury
+,,,
+SUG,264,Graffiti / Scratchiti,Incident
+PUMST,228,Station Stairway Incident ,Subway Station
+TUO,221,Transportation Department - Other,Miscellaneous
+MUATC,219,ATC Project,ATC
+EUSC,181,Speed Control Equipment  ,Mechanical Fault
+MUDD,156,Door Problems - Debris Related,Mechanical Fault
+SUAE,138,Assault / Employee Involved,Assault
+EUDO,130,Door Problems - Faulty Equipment,Mechanical Fault
+TUMVS,115,Operator Violated Signal,Crew
+MUTO,106,Misc. Transportation Other - Employee Non-Chargeable,Crew
+PUMO,105,Station Other,Subway Station
+MUIE,93,Injured Employee,Injury
+EUNT,83,Equipment - No Trouble Found,Mechanical Fault
+MUD,76,Door Problems - Passenger Related,Mechanical Fault
+PUTWZ,71,Work Zone Problems - Track,Mechanical Fault
+TUNOA,68,No Operator Immediately Available ,Crew
+PUSTS,65,Signals - Train Stops,Signal Problem
+PUSAC,64,Signals Axle Counter Block Failure,Signal Problem
+SUEAS,63,Emergency Alarm Station Activation,Alarm
+TUNIP,62,Operator Not In Position,Crew
+SUSA,54,Sexual Assault,Assault
+SUROB,54,Robbery,Incident
+PUTO,52,T&S Other,Miscellaneous
+TUCC,51,Transit Control Related Problems,Mechanical Fault
+MUPLB,48,Fire/Smoke Plan B - Source TTC,Fire
+,,,
+SUPOL,44,Held By Polce - Non-TTC Related,Incident
+PUSI,44,Signals or Related Components Failure ,Signal Problem
+TUS,41,Crew Unable to Maintain Schedule,Crew
+EUBK,37,Brakes,Mechanical Fault
+PUSRA,36,Subway Radio System Fault ,Mechanical Fault
+EUCD,36,Consequential Delay (2nd Delay Same Fault),Miscellaneous
+TUOS,36,Operator Overshot Platform,Crew
+PUTR,35,Rail Related Problem,Mechanical Fault
+PUSTC,34,Signals - Track Circuit Problems,Signal Problem
+PUTOE,34,T & S Operator Related Problems,Crew
+EUVE,32,Work Vehicle,Mechanical Fault
+PUSSW,30,Track Switch Failure - Signal Related Problem,Signal Problem
+TUSUP,29,Supervisory Error,Crew
+MUWR,29,Work Refusal,Crew
+PUSNT,25,Signal Problem - No Trouble,Signal Problem
+EUYRD,25,Yard/Carhouse Related Problems,Mechanical Fault
+PUSO,24,S/E/C Department Other,Miscellaneous
+PUSCR,22,Subway Car Radio Fault ,Mechanical Fault
+EUO,21,RC&S Other,Miscellaneous
+MUPR1,21,Priority One - Train in Contact With Person,Incident
+MUWEA,21,Weather Reports / Related Delays,Weather
+TUATC,21,ATC Operator Related,ATC
+EUME,21,RC&S Maintenance Error - (Human),Mechanical Fault
+,,,
+EUBO,20,Body,Mechanical Fault
+MUGD,20,Miscellaneous General Delays,Miscellaneous
+EUAC,20,Air Conditioning,Mechanical Fault
+MUPLC,19,Fire/Smoke Plan C,Fire
+MUNOA,18,No Operator Immediately Available - Not E.S.A. Related ,Crew
+EUVA,16,Warning Alarm Systems,Alarm
+TUOPO,16,OPTO Operator Related,Crew
+MUTD,15,Training Department Related Delays,Crew
+MUCL,15,Divisional Clerk Related,Crew
+,,,
+EUOE,13,Rail Cars & Shops Opr. Error,Mechanical Fault
+EUPI,13,Propulsion System,Mechanical Fault
+EUNEA,10,No Equipment Available,Miscellaneous
+PUCSC,9,Signal Control Problem - Signals,Signal Problem
+TUSET,9,Train Controls Improperly Shut Down,System
+MUFS,8,Fire/Smoke Plan B - Source External to TTC,Fire
+PUTD,7,Track Level Debris - Controllable,Cleanliness
+EUCO,7,Couplers,Mechanical Fault
+PUSIS,7,Signals Track Weather Related,Weather
+PUSWZ,6,Work Zone Problems - Signals,Signal Problem
+EUCA,6,Compressed Air,Mechanical Fault
+PUCSS,6,Central Office Signalling System,Signal Problem
+TUKEY,6,Two Drum Switch Keys Activated,Mechanical Fault
+EUECD,5,ECD / Line Mechanic Related Prob.,Mechanical Fault
+PUSCA,5,SCADA Related Problems ,Miscellaneous
+,,,
+PUTIJ,5,Insulated Joint Related Problem,Mechanical Fault
+EUTR,5,Trucks,Miscellaneous
+TUST,5,Storm Trains,Miscellaneous
+PUATC,5,ATC Signals Other,ATC
+EUOPO,4,OPTO RC&S Non-Train Door Monitoring,Mechanical Fault
+PUTS,4,Structure Related Problem,Mechanical Fault
+PUTIS,4,Ice / Snow Related Problems,Weather
+PUTSM,4,Track Switch Failure - Track Related Problem,Mechanical Fault
+SUBT,3,Bomb Threat,Incident
+EUTRD,3,TR Cab Doors,Mechanical Fault
+PUTTC,3,Track Circuit Problems - Re: Defective Bolts/Bonding,Mechanical Fault
+EUAL,3,Alternating Current,Mechanical Fault
+SUSP,3,Suspicious Package,Incident
+EUATC,3,ATC RC&S Equipment,Mechanical Fault
+PUSTP,2,Traction Power or Related Components Failure,Mechanical Fault
+EULV,2,Low Voltage,Mechanical Fault
+EULT,2,Lighting System,Mechanical Fault
+,,,
+EUTL,2,Trainline System,Mechanical Fault
+TUDOE,1,Doors Open in Error,Mechanical Fault
+MUPLA,1,Fire/Smoke Plan A,Fire
+PUTSC,1,Signal Control Problem - Track,Signal Problem
+,,,
+EUTM,1,Traction Motors,Mechanical Fault
+,,,
+TUML,1,Mainline Storage,Miscellaneous
+PUSIO,1,Smart IO Failure,Mechanical Fault
