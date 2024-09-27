@@ -1,221 +1,264 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
-author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: [https://github.com/RohanAlexander/starter_folder](https://github.com/RohanAlexander/starter_folder)."
+title: "Analysis of transit delays in the Toronto Transit Commission: 2024"
+subtitle: "Insights from Jan 1 to Aug 31"
+author: "Dong Jun Yoon"
+thanks: "Code and data are available at: https://github.com/DJY1231/TTC-report-2024.git"
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This paper provides analyzes of TTC delay data to understand the causes of delays. It illustrates uncover patterns in transit delays, comparing delay causes, trends over time, and variations across different vehicle types. Buses tend to experience delays more frequently than subways or streetcars, occurring approximately 2.35 times more often than subway delays and 4.07 times more than streetcar delays. It suggests that the bus system is less reliable compared to other modes of transportation, likely due to factors such as traffic conditions, mechanical issues, and operational difficulties."
 format: pdf
 number-sections: true
 bibliography: references.bib
 ---
 
-```{r}
-#| include: false
-#| warning: false
-#| message: false
-
-library(tidyverse)
-library(palmerpenguins)
-```
-
-
 # Introduction
+Having operated for over 100 years, the Toronto Transit Commission (TTC) has become one of the most visible and representative public transportation organizations in North America. It is well-known as the primary mode of public transportation in Toronto's daily life. Within the TTC, the bus network typically experiences higher daily ridership compared to streetcars, while subways accommodate the largest volume of passengers due to their central role in covering longer routes. Frequent riders often notice delays that arise on a daily basis. As delays become worse and services becoming increasingly inconsistent, it is important to examine the potential causes, allowing the TTC to identify and implement effective solutions.
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
-
-The remainder of this paper is structured as follows. @sec-data....
-
-
+This paper will identify the correlations of public transit delays across different types of transportation. The data utilized for analysis, including both records and census data, measurements, is in {#sec-data}. In {#sec-results}, I will talk about the predicted results derived from the data, this includes the result of the differences in delays between buses, streetcars, and subways. Lastly, {#sec-Discussion} contains more detailed results in a broader context and addresses weaknesses of this paper as well as the future explorations. 
 
 # Data {#sec-data}
+## Data Source
+The data were gathered from Open Data Toronto's report on TTC delays. The datasets, published by the TTC, include the following: the first dataset presents delay statistics for subways in 2024 from January 1 to August 31; the second dataset details delay statistics for buses in 2024 from January 1 to August 31; and the third dataset provides delay statistics for streetcars in 2024 from January 1 to August 31.
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+# Data Analysis
+The dataset provides information that offers insights of public transit delays across different types of transportation.
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
+Additionally, data cleaning and analysis were conducted using the base statistical programming language R (R Core Team 2023), tidyverse (Wickham et al. 2019), ggplot2 (Wickham 2016), dplyr (Wickham et al. 2023), readr (Wickham, Hester, and Bryan 2023), tibble (Müller and Wickham 2023), janitor (Firke 2023), and knitr (Xie 2023) package were used.
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
+# Overview of datasets
+```{r, echo=FALSE}
+suppressMessages({
+  install.packages("kableExtra")
+  
+  library(kableExtra)
+  library(dplyr)
+  library(knitr)
+})
+
+data <- read.csv("ttc_bus_delay_data_2024.csv")
+
+subset_data <- data %>%
+  select(Date, Time, Day, Incident, Min_Delay, Min_Gap) %>% 
+  head(10)
+
+kable(subset_data, format = "pipe", align = 'l') %>%
+  kable_styling(full_width = F, position = "center")
+```
+Table 1: Sample of bus delay statistics; the first 10 rows of TTC bus delay over time: Jan 1 to Aug 31, 2024.
+
+```{r, echo=FALSE}
+library(kableExtra)
+library(dplyr)
+library(knitr)
+
+data <- read.csv("ttc_streetcar_delay_data_2024.csv")
+
+subset_data <- data %>%
+  select(Date, Time, Day, Incident, Min_Delay, Min_Gap) %>% 
+  head(10)
+
+kable(subset_data, format = "pipe", align = 'l') %>%
+  kable_styling(full_width = F, position = "center")
+
+```
+Table 2: Sample of streetcar delay statistics; the first 10 rows of TTC subway delay over time: Jan 1 to Aug 31, 2024.
+
+```{r, echo=FALSE}
+library(kableExtra)
+library(dplyr)
+library(knitr)
+
+data <- read.csv("ttc_subway_delay_data_2024.csv")
+
+subset_data <- data %>%
+  select(Date, Time, Day, Code, Min_Delay, Min_Gap) %>% 
+  head(10)
+
+kable(subset_data, format = "pipe", align = 'l') %>%
+  kable_styling(full_width = F, position = "center")
+```
+Table 3: Sample of subway delay statistics; the first 10 rows of TTC subway delay over time: Jan 1 to Aug 31, 2024.
+
+Table 1, Table 2, Table 3 include:
+
+1. Date: The dataset shows the date when the delay occurred.
+2. Time: The dataset contains information on the time the delay occurred.
+3. Day: The dataset indicates the day of the week when the delay occurred.
+4. Incident: The dataset displays the reason for the delay, such as a general delay, emergency services, or security issues. Incident is displayed in code for Table 3.
+5. Min_Delay and Min_Gap: The dataset likely represents 'Min Delay' and 'Min Gap,' both measured in minutes. 'Min Delay' refers to the delay in the schedule for the next bus, while 'Min Gap' indicates the scheduled time, between the bus ahead and the following bus.
+
+The total bus delay dataset contains 40,447 entries, while the subway delay dataset contains 17,517 entries, and streetcar delay dataset contains 9,932 entries. We can indicate that delays in the bus has occurred approximately 2.35 times more than the subway delay and 4.07 times more than the streetcar delay. 
+
+# Data Visualization {#sec-results}
+```{r, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+
+bus_data <- read.csv("ttc_bus_delay_data_2024.csv")
+streetcar_data <- read.csv("ttc_streetcar_delay_data_2024.csv")
+
+combined_data <- bind_rows(bus_data, streetcar_data)
+
+incident_summary <- combined_data %>%
+  group_by(Incident) %>%
+  summarise(Total_Incidents = n()) %>%
+  arrange(desc(Total_Incidents))
+ggplot(incident_summary, aes(x = reorder(Incident, -Total_Incidents), y = Total_Incidents)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Reasons of Bus and Streetcar Delay", 
+       x = "Incident Type", 
+       y = "Total Incidents") +
   theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
 ```
+Figure 1: Distribution of Bus and Streetcar Delay Reasons
 
-Talk more about it.
+Figure 1 illustrates the main reasons for bus and streetcar delays. The primary cause of delays for bus and streetcars are mechanical issues, followed by operational issues, security concerns, diversions, and general delays. Other reasons can be observed in Figure 1, but I will not mention them all as they are not the main causes of delays.
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+```{r, echo=FALSE}
+library(ggplot2)
+library(dplyr)
 
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
+subway_data <- read.csv("Subway_count_2024.csv")
 
-analysis_data <- read_csv(here::here("data/02-analysis_data/analysis_data.csv"))
+subway_data_clean <- subway_data %>%
+  filter(!is.na(Delay.Group) & !is.na(Count) & Count > 0)
 
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
+delay_group_summary <- subway_data_clean %>%
+  group_by(Delay.Group) %>%
+  summarise(Total_Count = sum(Count)) %>%  
+  arrange(desc(Total_Count))  
+
+ggplot(delay_group_summary, aes(x = reorder(Delay.Group, -Total_Count), y = Total_Count)) +
+  geom_bar(stat = "identity", fill = "tomato") +
+  labs(title = "Total Delays by Delay Group (TTC Subway)", 
+       x = "Delay Group", 
+       y = "Total Delays") +
   theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
 ```
 
-Talk way more about it. 
+Figure 2: Distribution of Subway Delay Reasons
 
+Figure 2 illustrates the main reasons for subway delays. The main cause of delays for the subway is patron, injury, incident, and mechanical issues. Other reasons can be observed in Figure 2, but I will not mention them all as they are not the main causes of delays. 
 
+```{r, echo=FALSE}
+library(ggplot2)
+library(dplyr)
 
-# Model
+bus_data <- read.csv('ttc_bus_delay_data_2024.csv')
+streetcar_data <- read.csv('ttc_streetcar_delay_data_2024.csv')
+subway_data <- read.csv('ttc_subway_delay_data_2024.csv')
 
-The goal of our modelling strategy is twofold. Firstly,...
+day_abbreviations <- c("Monday" = "Mon", "Tuesday" = "Tue", "Wednesday" = "Wed", 
+                       "Thursday" = "Thu", "Friday" = "Fri", "Saturday" = "Sat", 
+                       "Sunday" = "Sun")
 
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+abbreviate_day <- function(day) {
+  return(day_abbreviations[day])
+}
 
-## Model set-up
+bus_delays_by_day <- bus_data %>%
+  filter(Day %in% names(day_abbreviations)) %>%
+  group_by(Day) %>%
+  summarise(Count = n()) %>%
+  mutate(Day = abbreviate_day(Day))
 
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+streetcar_delays_by_day <- streetcar_data %>%
+  filter(Day %in% names(day_abbreviations)) %>%
+  group_by(Day) %>%
+  summarise(Count = n()) %>%
+  mutate(Day = abbreviate_day(Day))
 
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
+subway_delays_by_day <- subway_data %>%
+  filter(Day %in% names(day_abbreviations)) %>%
+  group_by(Day) %>%
+  summarise(Count = n()) %>%
+  mutate(Day = abbreviate_day(Day))
 
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+bus_delays_by_day$vehicle <- "Bus"
+streetcar_delays_by_day$vehicle <- "Streetcar"
+subway_delays_by_day$vehicle <- "Subway"
 
+combined_data <- rbind(bus_delays_by_day, streetcar_delays_by_day, subway_delays_by_day)
 
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
-
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
+ggplot(combined_data, aes(x = Day, y = Count, color = vehicle, group = vehicle)) +
+  geom_line(size = 1) +
+  geom_point() +
+  labs(title = "Number of delays caused in day, by Vehicle",
+       x = "Day of the Week",
+       y = "Count of Delays",
+       color = "Vehicle") +
+  theme_minimal() +
+  scale_x_discrete(limits = c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"))
 ```
+Figure 3: The trend of delays based on the day of the week
 
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
+Figure 3 shows the trend of delays based on the day of the week. We can observe which day experiences the most delays and which day experiences the least. It also provides an overview of the delay trend throughout the week.
 
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
+This information provides valuable insights for the TTC to prepare alternative solutions for delays. For instance, they could deploy more buses or trains on days with higher delays compared to those with fewer delays. In this case, the TTC could operate more buses on Tuesdays, as an upward trend in delays is observed from Monday to Tuesday. Conversely, the TTC could reduce the number of buses on weekends, as there is a downward trend in delays during that time.
+
+```{r, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+
+bus_data <- read.csv('ttc_bus_delay_data_2024.csv')
+streetcar_data <- read.csv('ttc_streetcar_delay_data_2024.csv')
+subway_data <- read.csv('ttc_subway_delay_data_2024.csv')
+
+bus_summary <- bus_data %>%
+  summarise(Total_Delays = n(), Avg_Delay_Time = mean(`Min_Delay`, na.rm = TRUE))
+
+streetcar_summary <- streetcar_data %>%
+  summarise(Total_Delays = n(), Avg_Delay_Time = mean(`Min_Delay`, na.rm = TRUE))
+
+subway_summary <- subway_data %>%
+  summarise(Total_Delays = n(), Avg_Delay_Time = mean(`Min_Delay`, na.rm = TRUE))
+
+summary_data <- data.frame(
+  Vehicle = c("Bus", "Streetcar", "Subway"),
+  Total_Delays = c(bus_summary$Total_Delays, streetcar_summary$Total_Delays, subway_summary$Total_Delays),
+  Avg_Delay_Time = c(bus_summary$Avg_Delay_Time, streetcar_summary$Avg_Delay_Time, subway_summary$Avg_Delay_Time)
 )
+
+ggplot(summary_data, aes(x = Vehicle, y = Total_Delays, fill = Vehicle)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Total Number of Delays per Vehicle", x = "Vehicle", y = "Total Delays") +
+  theme_minimal()
+
+ggplot(summary_data, aes(x = Vehicle, y = Avg_Delay_Time, fill = Vehicle)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Average Delay Time per Vehicle (in Minutes)", x = "Vehicle", y = "Average Delay Time (Minutes)") +
+  theme_minimal()
+
 ```
+Figure 4: Total delay time and average delay time for each type of vehicles
 
+In Figure 4, we observe the trend of total delay time and average delay time for each type of transportation. A closer look at the chart reveals that buses tend to have the highest total delay time and average delay time among all vehicles, with an total delay time of 40,000 minutes and average delay time of approximately 23 minutes which is about 8.8 times longer than the average subway delay time. Eventually, the streetcar has the least total delay time among all the vehicles; however, it has a longer average delay time than the subway.
 
+# Discussion {#sec-Discussion}
+This paper investigates the correlation of transit delays across different modes of public transportation operated by the Toronto Transit Commission (TTC), namely buses, streetcars, and subways. By analyzing datasets from January 1 to August 31, 2024, the paper provides insights into the causes and frequency of delays, for example it illustrates uncover patterns in transit delays, comparing delay causes, trends over time, and variations across different vehicle types. This is supported by visualizations showing in the figures above.
 
+One key insight from the paper is that buses tend to experience delays more frequently than subways or streetcars, occurring approximately 2.35 times more often than subway delays and 4.07 times more than streetcar delays. This is a significant finding, as it suggests that the bus system is less reliable compared to other modes of transportation, likely due to factors such as traffic conditions, mechanical issues, and operational difficulties. Another observation is the difference in the reasons for delays among the different transportation types. For buses and streetcars, mechanical and operational issues are the leading causes of delays, while for subways, the main causes are patron-related incidents and mechanical failures. This differentiation highlights how the nature of the transportation system influences the kinds of challenges they face, emphasizing the need for tailored solutions to address these issues.
 
-# Discussion
+A possible weakness is its reliance on limited data from a single year (2024), which may not capture long-term trends or variations in delay patterns over time. Additionally, the report only includes data up to August 31, which does not represent a full year. Moreover, while the analysis uses statistical and visualization tools effectively, it does not deeply explore underlying causes beyond mechanical or operational issues. Another potential limitation is the lack of consideration for external factors like weather conditions, traffic accidents, or city-wide events that might influence transit delays. Future research could build upon this analysis by expanding the dataset to include multiple years or integrating external factors, such as traffic patterns, weather conditions, or special events, to provide a more comprehensive understanding of the causes of delays. Additionally, more detailed exploration into specific operational or technical issues causing delays for each transportation mode would help the TTC implement targeted solutions.
 
-## First discussion point {#sec-first-point}
+# Conclusion
+In conclusion, this paper highlights key insights into transit delays across the TTC’s buses, streetcars, and subways based on data from January to August 2024. The analysis reveals that buses experience delays far more frequently than subways and streetcars, largely due to mechanical and operational issues, while subway delays are often caused by passenger-related incidents. Recognizing these patterns could help the TTC address specific repair needs and implement methods to reduce failures, ultimately increasing customer satisfaction and improving transportation for residents in the Toronto area.
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+# References 
+R Core Team. 2023. R: A Language and Environment for Statistical Computing. Vienna,
+Austria: R Foundation for Statistical Computing. https://www.R-project.org/.
 
-## Second discussion point
+Xie, Yihui. 2023. Knitr: A General-Purpose Package for Dynamic Report Generation in r.
+https://yihui.org/knitr/.
 
-## Third discussion point
+Wickham, Hadley, Jim Hester, and Jennifer Bryan. 2024. Readr: Read Rectangular Text Data.
+27. https://readr.tidyverse.org.
 
-## Weaknesses and next steps
+Wickham, Hadley. 2016. Ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New
+York. https://ggplot2.tidyverse.org.
 
-Weaknesses and next steps should also be included.
-
-\newpage
-
-\appendix
-
-# Appendix {-}
-
-
-# Additional data details
-
-# Model details {#sec-model-details}
-
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
-```
-
-## Diagnostics
-
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
-
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
-
-
-\newpage
-
-
-# References
-
-
+Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. Dplyr: A Grammar of Data Manipulation. https://dplyr.tidyverse.org.
